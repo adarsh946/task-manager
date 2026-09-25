@@ -24,7 +24,7 @@ def login():
         "client_id": GOOGLE_CLIENT_ID,
         "redirect_uri": f"{BACKEND_URL}/auth/callback",
         "response_type": "code",
-        "scope": "openid email profile https://www.googleapis.com/auth/gmail.send",
+        "scope": "openid email profile",
         "access_type": "offline",
         "prompt": "consent"
     }

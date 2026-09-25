@@ -8,9 +8,9 @@ interface Props {
 }
 
 const statusColors = {
-  pending: "bg-yellow-100 text-yellow-800",
-  in_progress: "bg-blue-100 text-blue-800",
-  completed: "bg-green-100 text-green-800",
+  pending: "bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-200",
+  in_progress: "bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-200",
+  completed: "bg-green-50 text-green-700 ring-1 ring-inset ring-green-200",
 };
 
 const statusLabels = {
@@ -34,46 +34,53 @@ export default function TaskCard({ task, onUpdate }: Props) {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col gap-3">
-      <div className="flex justify-between items-start">
-        <h3 className="font-semibold text-gray-800 text-lg">{task.title}</h3>
+    <div className="group bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col gap-4 hover:shadow-md hover:border-gray-200 hover:-translate-y-0.5 transition-all duration-200">
+      <div className="flex justify-between items-start gap-3">
+        <h3 className="font-semibold text-gray-900 text-base sm:text-lg leading-snug break-words min-w-0">
+          {task.title}
+        </h3>
         <span
-          className={`text-xs px-2 py-1 rounded-full font-medium ${
+          className={`shrink-0 inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-medium whitespace-nowrap ${
             statusColors[task.status]
           }`}
         >
+          <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70"></span>
           {statusLabels[task.status]}
         </span>
       </div>
 
       {task.description && (
-        <p className="text-gray-500 text-sm">{task.description}</p>
+        <p className="text-gray-500 text-sm leading-relaxed line-clamp-3">
+          {task.description}
+        </p>
       )}
 
-      <div className="flex gap-3 text-sm text-gray-500">
-        {task.creator && (
-          <div className="flex items-center gap-1">
-            <span>Created by:</span>
-            <span className="font-medium text-gray-700">
-              {task.creator.name}
-            </span>
-          </div>
-        )}
-        {task.assignee && (
-          <div className="flex items-center gap-1">
-            <span>Assigned to:</span>
-            <span className="font-medium text-gray-700">
-              {task.assignee.name}
-            </span>
-          </div>
-        )}
-      </div>
+      {(task.creator || task.assignee) && (
+        <div className="flex flex-col gap-1.5 text-sm text-gray-500 pt-3 border-t border-gray-100">
+          {task.creator && (
+            <div className="flex items-center gap-1.5 min-w-0">
+              <span className="text-gray-400">Created by:</span>
+              <span className="font-medium text-gray-700 truncate">
+                {task.creator.name}
+              </span>
+            </div>
+          )}
+          {task.assignee && (
+            <div className="flex items-center gap-1.5 min-w-0">
+              <span className="text-gray-400">Assigned to:</span>
+              <span className="font-medium text-gray-700 truncate">
+                {task.assignee.name}
+              </span>
+            </div>
+          )}
+        </div>
+      )}
 
-      <div className="flex gap-2 mt-1 flex-wrap">
+      <div className="flex gap-2 mt-auto flex-wrap">
         {task.status !== "in_progress" && task.status !== "completed" && (
           <button
             onClick={() => updateStatus("in_progress")}
-            className="text-xs bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 transition"
+            className="text-xs font-medium bg-blue-600 text-white px-3.5 py-2 rounded-lg shadow-sm hover:bg-blue-700 active:scale-[0.97] transition-all duration-200"
           >
             Start
           </button>
@@ -81,14 +88,14 @@ export default function TaskCard({ task, onUpdate }: Props) {
         {task.status !== "completed" && (
           <button
             onClick={() => updateStatus("completed")}
-            className="text-xs bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 transition"
+            className="text-xs font-medium bg-green-600 text-white px-3.5 py-2 rounded-lg shadow-sm hover:bg-green-700 active:scale-[0.97] transition-all duration-200"
           >
             Complete
           </button>
         )}
         <button
           onClick={deleteTask}
-          className="text-xs bg-red-100 text-red-600 px-3 py-1 rounded-lg hover:bg-red-200 transition"
+          className="ml-auto text-xs font-medium text-red-600 px-3.5 py-2 rounded-lg hover:bg-red-50 active:scale-[0.97] transition-all duration-200"
         >
           Delete
         </button>
