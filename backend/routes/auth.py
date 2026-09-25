@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect, request, jsonify
 import requests
 import os
-import jwt
+import jwt  # type: ignore
 import datetime
 from services.supabase_client import supabase
 
@@ -66,7 +66,8 @@ def callback():
     avatar_url = user_info.get("picture")
 
     # Check if user exists in Supabase
-    existing = supabase.table("users").select("*").eq("google_id", google_id).execute()
+    existing = supabase.table("users").select(
+        "*").eq("google_id", google_id).execute()
 
     if existing.data:
         # Update refresh token
