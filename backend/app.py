@@ -7,7 +7,8 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True, origins=[os.getenv("FRONTEND_URL")])
+CORS(app, supports_credentials=True, origins=["*"], allow_headers=[
+     "Content-Type", "Authorization"], methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"])
 
 app.register_blueprint(auth_bp, url_prefix="/auth")
 app.register_blueprint(users_bp, url_prefix="/users")
